@@ -1,4 +1,4 @@
-name: android-latest
+name: android
 
 on:
   push:

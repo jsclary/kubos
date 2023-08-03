@@ -1,9 +1,9 @@
-#[cfg(not(target_os = "android"))]
+#[cfg(not(any(target_os = "android", target_os = "ios", target_arch = "wasm32")))]
 fn main() {
     // This bit of indirection is necessary for Android.
-    kubos::entry_point()
+    libkubos::entry_point()
 }
 
 // Android doesn't use the bin output but the compiler complains otherwise.
-#[cfg(target_os = "android")]
+#[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32"))]
 fn main() {}

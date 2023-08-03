@@ -1,10 +1,12 @@
 use bevy::{prelude::*, window::PrimaryWindow, winit::WinitWindows};
 use bevy_atmosphere::prelude::*;
 use bevy_screen_diagnostics::{ScreenDiagnosticsPlugin, ScreenFrameDiagnosticsPlugin};
-//use bevy_console::{ConsoleConfiguration, ConsolePlugin};
 use bevy_spectator::{Spectator, SpectatorPlugin};
 use winit::window::Icon;
 use bevy_egui::{egui, EguiContexts, EguiPlugin};
+
+#[cfg(not(any(target_os = "android", target_os = "ios", target_arch = "wasm32")))]
+use bevy_console::{ConsoleConfiguration, ConsolePlugin};
 
 mod chunk;
 mod client;
@@ -30,15 +32,14 @@ fn main() {
 
 #[no_mangle]
 pub fn entry_point() {
-    App::new()
-        //* Necessary for atmosphere plugin
-        .insert_resource(Msaa::Sample4)
+    let mut app = App::new();
+
+    app.insert_resource(Msaa::Sample4)
         .insert_resource(AtmosphereModel::default()) // Default Atmosphere material, we can edit it to simulate another planet
         .insert_resource(CycleTimer(Timer::new(
             bevy::utils::Duration::from_millis(50), // Update our atmosphere every 50ms (in a real game, this would be much slower, but for the sake of an example we use a faster update)
             TimerMode::Repeating,
         )))
-        //*/
         .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
         .add_plugins((
             DefaultPlugins
@@ -50,7 +51,6 @@ pub fn entry_point() {
                     }),
                     ..default()
                 }),
-            //ConsolePlugin,
             AtmospherePlugin,
             SpectatorPlugin,
             LobbyPlugin,
@@ -61,15 +61,24 @@ pub fn entry_point() {
             EguiPlugin,
         ))
         .add_state::<AppState>()
-        //.insert_resource(ConsoleConfiguration { ..default() })
         .add_systems(Startup, setup)
         .add_systems(Startup, create_ground_plane)
         .add_systems(Update, change_nishita)
         .add_systems(Update, daylight_cycle)
         .add_systems(Update, update_compass)
-        .add_systems(Startup, set_window_icon)
-        .add_systems(Update, ui_example_system)
-        .run();
+        .add_systems(Startup, set_window_icon);
+    
+    // TODO: This ensures everything builds properly with bevy_egui. It can be removed after 
+    // https://github.com/mvlabat/bevy_egui/issues/198 or once we've added our own egui code.
+    #[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32"))]
+    app.add_systems(Update, ui_example_system);
+
+    // TODO: This condition can be removed if https://github.com/mvlabat/bevy_egui/issues/198 is resolved.
+    #[cfg(not(any(target_os = "android", target_os = "ios", target_arch = "wasm32")))]
+    app.add_plugins(ConsolePlugin)
+        .insert_resource(ConsoleConfiguration { ..default() });
+
+    app.run();
 }
 
 fn setup(mut commands: Commands) {
