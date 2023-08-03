@@ -1,8 +1,10 @@
 use bevy::{prelude::*, window::PrimaryWindow, winit::WinitWindows};
 use bevy_atmosphere::prelude::*;
+use bevy_screen_diagnostics::{ScreenDiagnosticsPlugin, ScreenFrameDiagnosticsPlugin};
 //use bevy_console::{ConsoleConfiguration, ConsolePlugin};
 use bevy_spectator::{Spectator, SpectatorPlugin};
 use winit::window::Icon;
+use bevy_egui::{egui, EguiContexts, EguiPlugin};
 
 mod chunk;
 mod client;
@@ -29,14 +31,14 @@ fn main() {
 #[no_mangle]
 pub fn entry_point() {
     App::new()
-        /* Necessary for atmosphere plugin
+        //* Necessary for atmosphere plugin
         .insert_resource(Msaa::Sample4)
         .insert_resource(AtmosphereModel::default()) // Default Atmosphere material, we can edit it to simulate another planet
         .insert_resource(CycleTimer(Timer::new(
             bevy::utils::Duration::from_millis(50), // Update our atmosphere every 50ms (in a real game, this would be much slower, but for the sake of an example we use a faster update)
             TimerMode::Repeating,
         )))
-        */
+        //*/
         .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
         .add_plugins((
             DefaultPlugins
@@ -49,20 +51,24 @@ pub fn entry_point() {
                     ..default()
                 }),
             //ConsolePlugin,
-            //AtmospherePlugin,
+            AtmospherePlugin,
             SpectatorPlugin,
             LobbyPlugin,
             ServerPlugin,
             ClientPlugin,
+            ScreenDiagnosticsPlugin::default(), // TODO: Use one of our fonts?
+            ScreenFrameDiagnosticsPlugin,
+            EguiPlugin,
         ))
         .add_state::<AppState>()
         //.insert_resource(ConsoleConfiguration { ..default() })
         .add_systems(Startup, setup)
         .add_systems(Startup, create_ground_plane)
-        //.add_systems(Update, change_nishita)
-        //.add_systems(Update, daylight_cycle)
+        .add_systems(Update, change_nishita)
+        .add_systems(Update, daylight_cycle)
         .add_systems(Update, update_compass)
-        //.add_systems(Startup, set_window_icon)
+        .add_systems(Startup, set_window_icon)
+        .add_systems(Update, ui_example_system)
         .run();
 }
 
@@ -216,19 +222,30 @@ pub fn set_window_icon(
     main_window: Query<Entity, With<PrimaryWindow>>,
     windows: NonSend<WinitWindows>,
 ) {
-    let Some(primary) = windows.get_window(main_window.single()) else {
-        return;
-    };
+    // TODO: This should work on X Windows, too, but it's unclear if cfg!(unix) would be a sufficient qualifier
+    // given that it is possible to run bevy under SDL2. Android complains about it, though. 
+    if cfg!(windows) {
+        let Some(primary) = windows.get_window(main_window.single()) else {
+            return;
+        };
 
-    let (icon_rgba, icon_width, icon_height) = {
-        let image = image::open("assets/kubos.ico")
-            .expect("Failed to open icon path")
-            .into_rgba8();
-        let (width, height) = image.dimensions();
-        let rgba = image.into_raw();
-        (rgba, width, height)
-    };
+        let (icon_rgba, icon_width, icon_height) = {
+            let image = image::open("assets/kubos.ico")
+                .expect("Failed to open icon path")
+                .into_rgba8();
+            let (width, height) = image.dimensions();
+            let rgba = image.into_raw();
+            (rgba, width, height)
+        };
 
-    let icon = Icon::from_rgba(icon_rgba, icon_width, icon_height).unwrap();
-    primary.set_window_icon(Some(icon));
+        let icon = Icon::from_rgba(icon_rgba, icon_width, icon_height).unwrap();
+        primary.set_window_icon(Some(icon));
+    }
+}
+
+// Test code for Egui to determine if things will build properly on different targets.
+fn ui_example_system(mut contexts: EguiContexts) {
+    egui::Window::new("Hello").show(contexts.ctx_mut(), |ui| {
+        ui.label("world");
+    });
 }
