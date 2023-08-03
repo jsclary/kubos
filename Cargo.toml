@@ -4,6 +4,14 @@ name = "kubos"
 version = "0.1.0"
 edition = "2021"
 build = "build.rs"
+autobins = false
+
+[lib]
+name = "kubos"
+crate-type = ["lib", "staticlib", "cdylib"]
+
+[[bin]]
+name = "kubos"
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]
@@ -14,15 +22,31 @@ opt-level = 1
 opt-level = 3
 
 [dependencies]
-bevy = { version = "0.11.0", features = ["dynamic_linking"] }
+bevy = "0.11.0"
+#bevy = { version = "0.11.0" , features = ["dynamic_linking"] }
 bevy_atmosphere = "0.7.0"
-bevy_console = "0.8.0"
+#bevy_console = "0.8.0"
 bevy_quinnet = "0.5.0"
 bevy_spectator = "0.3.0"
-cargo-apk = "0.9.7"
 dyon = "0.48.1"
 image = "0.24.6"
 winit = "0.28.6"
 
 [build-dependencies]
 winres = "0.1.12"
+
+[package.metadata.android]
+package = "org.kubos"
+apk_name = "kubos"
+assets = "assets"
+resources = "assets/android-res"
+# This strips debug symbols from the shared libraries, drastically reducing APK size. If you need them, remove the option.
+strip = "strip"
+build_targets = ["aarch64-linux-android"]#, "armv7-linux-androideabi", "x86_64-linux-android"]
+
+[package.metadata.android.sdk]
+target_sdk_version = 34
+
+[package.metadata.android.application]
+icon = "@mipmap/ic_launcher"
+label = "kubos"

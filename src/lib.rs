@@ -1,6 +1,6 @@
 use bevy::{prelude::*, window::PrimaryWindow, winit::WinitWindows};
 use bevy_atmosphere::prelude::*;
-use bevy_console::{ConsoleConfiguration, ConsolePlugin};
+//use bevy_console::{ConsoleConfiguration, ConsolePlugin};
 use bevy_spectator::{Spectator, SpectatorPlugin};
 use winit::window::Icon;
 
@@ -20,14 +20,23 @@ enum AppState {
     Paused,
 }
 
-pub fn entrypoint() {
+#[cfg(target_os = "android")]
+#[bevy_main]
+fn main() {
+    entry_point()
+}
+
+#[no_mangle]
+pub fn entry_point() {
     App::new()
+        /* Necessary for atmosphere plugin
         .insert_resource(Msaa::Sample4)
         .insert_resource(AtmosphereModel::default()) // Default Atmosphere material, we can edit it to simulate another planet
         .insert_resource(CycleTimer(Timer::new(
             bevy::utils::Duration::from_millis(50), // Update our atmosphere every 50ms (in a real game, this would be much slower, but for the sake of an example we use a faster update)
             TimerMode::Repeating,
         )))
+        */
         .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
         .add_plugins((
             DefaultPlugins
@@ -39,21 +48,21 @@ pub fn entrypoint() {
                     }),
                     ..default()
                 }),
-            ConsolePlugin,
-            AtmospherePlugin,
+            //ConsolePlugin,
+            //AtmospherePlugin,
             SpectatorPlugin,
             LobbyPlugin,
             ServerPlugin,
             ClientPlugin,
         ))
         .add_state::<AppState>()
-        .insert_resource(ConsoleConfiguration { ..default() })
+        //.insert_resource(ConsoleConfiguration { ..default() })
         .add_systems(Startup, setup)
         .add_systems(Startup, create_ground_plane)
-        .add_systems(Update, change_nishita)
-        .add_systems(Update, daylight_cycle)
+        //.add_systems(Update, change_nishita)
+        //.add_systems(Update, daylight_cycle)
         .add_systems(Update, update_compass)
-        .add_systems(Startup, set_window_icon)
+        //.add_systems(Startup, set_window_icon)
         .run();
 }
 
@@ -189,7 +198,7 @@ fn create_ground_plane(
 }
 
 fn update_compass(/*mut commands: Commands,*/ mut query: Query<&mut Transform, With<Spectator>>,) {
-    if let Some(mut transform) = query.single_mut().into() {
+    if let Some(transform) = query.single_mut().into() {
         // Convert transform to a rotation around the y axis in degrees
         let quat = transform.rotation;
         //let yaw = (2.0 * (quat.w * quat.z + quat.x * quat.y)).atan2(1.0 - 2.0 * (quat.y.powi(2) + quat.z.powi(2)));
