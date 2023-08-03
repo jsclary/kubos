@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install rust-apk
-      run: cargo install rust-apk
+    - name: Install cargo-apk
+      run: cargo install cargo-apk
     - name: Build
       run: cargo apk build --verbose
