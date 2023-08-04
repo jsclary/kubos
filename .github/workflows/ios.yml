@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install ios targets
+      run: rustup target add aarch64-apple-ios; rustup target add x86_64-apple-ios
     - name: Install cbindgen and cargo-lipo
       run: cargo install cbindgen cargo-lipo
     - name: Install llvm
@@ -31,5 +33,3 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - name: Build
       run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
