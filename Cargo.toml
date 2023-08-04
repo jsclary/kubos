@@ -39,7 +39,7 @@ bevy_egui = { version = "0.21.0", default-features = false, features = ["open_ur
 bevy_egui = { version = "0.21.0"  }
 bevy_console = "0.8.0" # forces arboard usage in bevy_egui which doesn't build for Android
 
-[target.'cfg(windows)'.build-dependencies]
+[target.'cfg(any(target_env = "msvc", target_env = "gnu"))'.build-dependencies]
 winres = "0.1.12"
 
 [package.metadata.winres]
