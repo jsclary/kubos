@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install llvm
+      run: brew install llvm
     - name: Build
       run: cargo build --verbose
     - name: Run tests
