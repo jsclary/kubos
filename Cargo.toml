@@ -8,7 +8,6 @@ build = "build.rs"
 autobins = false
 
 [lib]
-name = "libkubos"
 # We need cdylib for Android, staticlib for iOS and lib (or rlib/dylib) for everything else.
 crate-type = ["lib", "staticlib", "cdylib"]
 
@@ -40,8 +39,12 @@ bevy_egui = { version = "0.21.0", default-features = false, features = ["open_ur
 bevy_egui = { version = "0.21.0"  }
 bevy_console = "0.8.0" # forces arboard usage in bevy_egui which doesn't build for Android
 
-[build-dependencies]
+[target.'cfg(windows)'.build-dependencies]
 winres = "0.1.12"
+
+[package.metadata.winres]
+OriginalFilename = "KUBOS.EXE"
+LegalCopyright = "Copyright © 2023 Kubos Studios"
 
 [package.metadata.android]
 package = "org.kubos"
@@ -50,7 +53,10 @@ assets = "assets"
 resources = "assets/android-res"
 # This strips debug symbols from the shared libraries, drastically reducing APK size. If you need them, remove the option.
 strip = "strip"
-# TODO: Figure out why adding armv7 target causes MANY problems.
+# TODO: Find a workaround for once_cell not being supported on armv7. There's a critical-section 
+# feature but it's unclear how to enable this throughout the dep tree without forking everything.
+# It also looks like it probably won't work without modification on multicore devices. See 
+# https://github.com/matklad/once_cell/issues/155 and https://github.com/matklad/once_cell/pull/165.
 build_targets = ["aarch64-linux-android", "x86_64-linux-android"]#, "armv7-linux-androideabi"]
 
 [package.metadata.android.sdk]

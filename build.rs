@@ -1,13 +1,22 @@
-#[cfg(any(target_os = "windows", target_os = "linux"))]
+#[cfg(any(target_env = "msvc", target_env="gnu"))]
 extern crate winres;
 
 fn main() {
-    // TODO: A target_os of "linux" might not be sufficient. I think it's specifically an X Windows target
-    // that it works with so this may break if we decide to support an SDL2 version.
-    #[cfg(any(target_os = "windows", target_os = "linux"))]
-    {
-        let mut res = winres::WindowsResource::new();
-        res.set_icon("assets/kubos.ico"); // Replace this with the filename of your .ico file.
-        res.compile().unwrap();
+
+    // Using cfg alone doesn't work because build.rs is compiled
+    // for the host OS regardless of the crate build target.
+    if std::env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
+ 
+        #[cfg(any(target_env = "msvc", target_env="gnu"))]
+        winres::WindowsResource::new()
+            .set_icon("assets/kubos.ico")
+            .set("InternalName", "kubos.exe")
+            .compile()
+            .unwrap();
+
+        // If we try to cross-builld an exe from mac or a musl 
+        // linux distro, warn that the icon won't be built.
+        #[cfg(not(any(target_env = "msvc", target_env="gnu")))]
+        warn!("The application icon for windows executables can only be added on windows and gnu linux.");
     }
 }
