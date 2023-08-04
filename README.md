@@ -1,5 +1,5 @@
 
-# <img alt="κύβος" src="assets/images/kubos-logo.png?raw=true" width="80%">
+# <img alt="κύβος" src="assets/images/kubos-logo.png?raw=true" width="60%">
 
 [![windows](https://github.com/jsclary/kubos/actions/workflows/windows.yml/badge.svg?event=push)](https://github.com/jsclary/kubos/actions/workflows/windows.yml)
 [![mac](https://github.com/jsclary/kubos/actions/workflows/macos.yml/badge.svg?event=push)](https://github.com/jsclary/kubos/actions/workflows/macos.yml)
