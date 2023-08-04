@@ -17,6 +17,6 @@ fn main() {
         // If we try to cross-builld an exe from mac or a musl 
         // linux distro, warn that the icon won't be built.
         #[cfg(not(any(target_env = "msvc", target_env="gnu")))]
-        warn!("The application icon for windows executables can only be added on windows and gnu linux.");
+        println!("WARNING: The application icon for windows executables can only be added on windows and gnu linux.");
     }
 }
