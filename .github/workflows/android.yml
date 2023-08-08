@@ -1,10 +1,8 @@
 name: android
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["linux"]
 
 env:
   CARGO_TERM_COLOR: always
@@ -32,9 +30,11 @@ jobs:
         swap-storage: false
     - uses: actions/checkout@v3
     - name: Install android targets
-      run: rustup target add aarch64-linux-android; rustup target add x86_64-linux-android; rustup target add armv7-linux-androideabi
-    - name: Install cargo-apk
-      run: cargo install cargo-apk
+      run: rustup target add aarch64-linux-android x86_64-linux-android armv7-linux-androideabi arm-linux-androideabi
+    - name: Install cargo-apk and xbuild
+      run: cargo install cargo-apk xbuild 
+    - name: Check xbuild status
+      run: x doctor
     - uses: actions/cache@v3
       with:
         path: |
