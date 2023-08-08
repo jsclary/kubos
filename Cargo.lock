@@ -453,30 +453,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_atmosphere"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72e824a9e417cea4dabece5214f621fed36c8e916790924fcd6054a3ca5342a3"
-dependencies = [
- "bevy",
- "bevy_atmosphere_macros",
- "cfg-if 1.0.0",
-]
-
-[[package]]
-name = "bevy_atmosphere_macros"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ec647b6d64306efddf366911786e7a6150e6a97603dd7380d62f81768f2a3f1"
-dependencies = [
- "bevy_macro_utils",
- "proc-macro-crate",
- "proc-macro2",
- "quote",
- "syn 2.0.27",
-]
-
-[[package]]
 name = "bevy_audio"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -998,15 +974,6 @@ name = "bevy_screen_diagnostics"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "00f51148d9ce56d2fcd677b9e99c149d2c49119d2cf4244f4c1100dfc003d288"
-dependencies = [
- "bevy",
-]
-
-[[package]]
-name = "bevy_spectator"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "814cce441e3acf0b3b017a050824b8d0cdb1be7fb14203a4542945c82b966fb1"
 dependencies = [
  "bevy",
 ]
@@ -2911,12 +2878,10 @@ name = "kubos"
 version = "0.1.0"
 dependencies = [
  "bevy",
- "bevy_atmosphere",
  "bevy_console",
  "bevy_egui",
  "bevy_quinnet",
  "bevy_screen_diagnostics",
- "bevy_spectator",
  "dyon",
  "image",
  "winit",

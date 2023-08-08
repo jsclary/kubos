@@ -18,16 +18,26 @@ fn setup(
     asset_server: Res<AssetServer>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let impossible_cube_handle = asset_server.load("images/kubos.png");
-    let cube_handle = asset_server.load("models/impossible_cube.gltf#Mesh0/Primitive0");
+    let kubos_full_handle = asset_server.load("images/kubos-full.png");
+    let cube_handle = asset_server.load("models/basecube.glb#Scene0");
     let material_handle = materials.add(StandardMaterial {
         base_color: Color::rgb(0.8, 0.7, 0.6),
         ..default()
     });
+
     //commands.spawn(Camera2dBundle::default());
-    commands.spawn(PbrBundle {
-        mesh: cube_handle,
-        material: material_handle.clone(),
+    commands.spawn(SceneBundle {
+        scene: cube_handle.clone(),
+        ..default()
+    });
+    commands.spawn(SceneBundle {
+        scene: cube_handle.clone(),
+        transform: Transform::from_xyz(0.5, 0., 0.),
+        ..default()
+    });
+    commands.spawn(SceneBundle {
+        scene: cube_handle,
+        transform: Transform::from_xyz(0.5, 0.5, 0.),
         ..default()
     });
     commands
@@ -45,16 +55,17 @@ fn setup(
         .with_children(|parent| {
             parent.spawn(ImageBundle {
                 image: UiImage {
-                    texture: impossible_cube_handle,
+                    texture: kubos_full_handle.clone(),
                     ..default()
                 },
                 style: Style {
-                    width: Val::Px(128.0),
-                    height: Val::Px(128.0),
+                    height: Val::Vh(20.0),
+                    aspect_ratio: Some(3.5), // This shouldn't be hardcoded but if it isn't, we have to wait for it to load?
                     ..default()
                 },
                 ..default()
             });
+            /*
             parent.spawn(
                 TextBundle::from_section(
                     "κύβος",
@@ -65,6 +76,7 @@ fn setup(
                     },
                 ), //.with_text_alignment(TextAlignment::Center),
             );
+            */
         });
     commands
         .spawn(NodeBundle {

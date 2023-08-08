@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "vadimcn.vscode-lldb",
+        "serayuzgur.crates",
+        "tamasfe.even-better-toml",
+        "github.vscode-github-actions",
+        "bierner.markdown-preview-github-styles",
+        "jscearcy.rust-doc-viewer",
+        "swellaby.vscode-rust-test-adapter",
+        "gruntfuggly.todo-tree",
+        "github.vscode-pull-request-github",
+        "rust-lang.rust-analyzer",
+        "eamodio.gitlens",
+        "cloudedcat.vscode-model-viewer"
+    ]
+}
