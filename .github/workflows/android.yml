@@ -3,6 +3,9 @@ name: android
 on:
   workflow_run:
     workflows: ["linux"]
+    branches: [main]
+    types: 
+      - completed
 
 env:
   CARGO_TERM_COLOR: always

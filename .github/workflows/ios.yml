@@ -3,6 +3,9 @@ name: ios
 on:
   workflow_run:
     workflows: ["macos"]
+    branches: [main]
+    types: 
+      - completed
 
 env:
   CARGO_TERM_COLOR: always
