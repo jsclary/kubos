@@ -1,10 +1,10 @@
 <img alt="κύβος" src="assets/images/kubos-full.png?raw=true" width="65%"><br>
 
-[![windows](../../actions/workflows/windows.yml/badge.svg?event=push)](../../actions/workflows/windows.yml)
-[![mac](../../actions/workflows/macos.yml/badge.svg?event=push)](../../actions/workflows/macos.yml)
-[![linux](../../actions/workflows/linux.yml/badge.svg?event=push)](../../actions/workflows/linux.yml)
-[![android](../../actions/workflows/android.yml/badge.svg?event=push)](../../actions/workflows/android.yml)
-[![ios](../../actions/workflows/ios.yml/badge.svg?event=push)](../../actions/workflows/ios.yml)
+[![windows](../../actions/workflows/windows.yml/badge.svg?branch=main)](../../actions/workflows/windows.yml)
+[![mac](../../actions/workflows/macos.yml/badge.svg?branch=main)](../../actions/workflows/macos.yml)
+[![linux](../../actions/workflows/linux.yml/badge.svg?branch=main)](../../actions/workflows/linux.yml)
+[![android](../../actions/workflows/android.yml/badge.svg?branch=main)](../../actions/workflows/android.yml)
+[![ios](../../actions/workflows/ios.yml/badge.svg?branch=main)](../../actions/workflows/ios.yml)
 
 # Kubos
 Kubos is a rust-based cross-platform game utilizing the Bevy ECS. This project was started primarily a testbed for development of new Bevy plugins and libraries for specialized networking, compression and physics with the hope it will evolve into a full-featured, playable game.
