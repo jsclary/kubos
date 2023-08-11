@@ -32,8 +32,7 @@ default = [ "bevy/android_share_stdcxx", "bevy_egui/open_url" ]
 bevy = "0.11.0"
 bevy_quinnet = "0.5.0"
 bevy_screen_diagnostics = "0.3.0"
-dyon = "0.48.1"
-image = "0.24.6"
+image = "0.24.7"
 winit = "0.28.6"
 
 [target.'cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32"))'.dependencies]
