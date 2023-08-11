@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install llvm
-      run: brew update; brew install llvm; source .zshrc
+      run: brew install llvm; export PATH="/usr/local/opt/llvm/bin:$PATH"; export LDFLAGS="-L/usr/local/opt/llvm/lib"; export CPPFLAGS="-I/usr/local/opt/llvm/include"
     - name: Install linux targets
       run: rustup target add aarch64-apple-darwin x86_64-apple-darwin
     - uses: actions/cache@v3

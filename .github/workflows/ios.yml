@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install llvm
-      run: brew update; brew install llvm ideviceinstaller; source .zshrc
+      run: brew install llvm ideviceinstaller; export PATH="/usr/local/opt/llvm/bin:$PATH"; export LDFLAGS="-L/usr/local/opt/llvm/lib"; export CPPFLAGS="-I/usr/local/opt/llvm/include"
     - name: Install ios targets
       run: rustup target add aarch64-apple-ios x86_64-apple-ios
     - name: Install cbindgen and cargo-lipo
