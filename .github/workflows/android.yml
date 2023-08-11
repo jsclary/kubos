@@ -32,6 +32,8 @@ jobs:
         docker-images: true
         swap-storage: false
     - uses: actions/checkout@v3
+    - name: Install prerequisites
+      run: sudo apt-get update; sudo apt-get install llvm lld lldb
     - name: Install android targets
       run: rustup target add aarch64-linux-android x86_64-linux-android armv7-linux-androideabi arm-linux-androideabi
     - name: Install cargo-apk and xbuild
