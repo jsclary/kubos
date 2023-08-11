@@ -1,3 +1,5 @@
+// Adapted from Bevy's examples/3d/skybox
+
 use std::f32::consts::PI;
 
 use bevy::{
